@@ -1,0 +1,37 @@
+{
+  "github_url": "https://github.com/Traia-IO/reddit-vader-sentiment-analysis-integration-mcp-server-prod",
+  "mcp_server": {
+    "name": "reddit-vader-integration-mcp",
+    "description": "Combines Reddit API integration (PRAW) with VADER sentiment analysis to provide comprehensive sentiment monitoring of Reddit discussions around crypto topics and other subjects. Uses D402 payment protocol for access control.",
+    "server_type": "streamable-http",
+    "requires_api_key": true,
+    "api_key_header": "Authorization",
+    "api_keys": ["REDDIT_CLIENT_SECRET"],
+    "capabilities": [
+      "analyze_subreddit_sentiment",
+      "search_and_analyze_reddit_sentiment",
+      "analyze_post_comments_sentiment",
+      "get_api_info"
+    ],
+    "payment_protocol": "402",
+    "dual_mode": true,
+    "dual_mode_description": "Supports both authenticated (with Reddit credentials) and payment (402 protocol) modes"
+  },
+  "deployment_method": "cloud_run",
+  "gcp_project_id": "traia-mcp-servers",
+  "gcp_region": "us-central1",
+  "tags": [
+    "reddit", 
+    "vader", 
+    "sentiment-analysis", 
+    "social-media", 
+    "crypto", 
+    "monitoring", 
+    "praw", 
+    "nlp", 
+    "integration",
+    "payment-protocol",
+    "d402"
+  ],
+  "ref": "main"
+}

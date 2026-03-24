@@ -1,16 +1,18 @@
 version: '3.8'
 
 services:
-  reddit-api-integration-mcp:
+  reddit-vader-integration-mcp:
     build: .
-    container_name: reddit-api-integration-mcp-server
+    container_name: reddit-vader-integration-mcp-server
     ports:
       - "8080:8080"
     environment:
       - PORT=8080
-      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID:-}
       - STAGE=${STAGE:-MAINNET}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      # Reddit API Configuration
+      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID:-}
+      - REDDIT_CLIENT_SECRET=${REDDIT_CLIENT_SECRET:-}
       # D402 Payment Protocol Configuration
       - SERVER_ADDRESS=${SERVER_ADDRESS:-}
       - MCP_OPERATOR_PRIVATE_KEY=${MCP_OPERATOR_PRIVATE_KEY:-}  # For signing settlement attestations
@@ -19,7 +21,6 @@ services:
       - D402_FACILITATOR_API_KEY=${D402_FACILITATOR_API_KEY:-}
       - D402_TESTING_MODE=${D402_TESTING_MODE:-false}  # Set to 'true' for local testing without facilitator
       - NETWORK=${NETWORK:-arbitrum_one}
-      - REDDIT_CLIENT_ID=${REDDIT_CLIENT_ID}
     volumes:
       - ./logs:/app/logs
     restart: unless-stopped
@@ -27,4 +28,4 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
       timeout: 10s
-      retries: 3 
+      retries: 3
