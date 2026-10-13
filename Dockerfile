@@ -51,7 +51,11 @@ RUN if [ -d .docker-iatp/IATP ]; then \
 # - Local mode: pyproject.toml references file:///tmp/IATP (set by run_local_docker.sh)
 # - Remote mode: pyproject.toml references traia-iatp>=0.1.66 (from template)
 RUN uv venv .venv && \
-    uv pip install -r pyproject.toml
+    if [ -f uv.lock ]; then \
+        uv sync --frozen --no-dev --prerelease=allow; \
+    else \
+        uv pip install --prerelease=allow -r pyproject.toml; \
+    fi
 
 # Set environment variables
 ENV PATH="/app/.venv/bin:$PATH"
@@ -70,4 +74,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 EXPOSE ${PORT:-8080}
 
 # Run the application
-CMD ["uv", "run", "python", "server.py"] 
+# Run the baked venv python directly. Do NOT use `uv run` here — it
+# re-resolves dependencies on every cold start and can pull a breaking major
+# (mcp 2.x renamed FastMCP -> MCPServer and took the fleet down 2026-10-12).
+CMD ["/app/.venv/bin/python", "server.py"] 
